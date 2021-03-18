@@ -4,7 +4,7 @@ import math as m
 
 class calcKinematic(object):
 
-    def __init__(self,p1=np.array([0,0,0]),theta1=0,p2=np.array([0,0,0]),theta2=0,p3=np.array([0,0,0])):
+    def __init__(self,p1=np.array([0,0,193.5]),theta1=0,p2=np.array([-0.5,-6.5,56.0]),theta2=0,p3=np.array([-5.0,27.7,0.0])):
         #初始化坐标系的原点位置和转角
         self.p1=p1
         self.theta1=theta1
@@ -16,7 +16,7 @@ class calcKinematic(object):
         #self.K=np.loadtxt()
         self.K=None
         self.alpha=None
-        self.r_face=18.0
+        self.r_face=10.8
 
     def _get_rotation_theta1(self):
         #计算绕z旋转theta1的旋转矩阵
@@ -48,7 +48,7 @@ class calcKinematic(object):
         face_position_img=np.array([cx,cy,1.0])
         face_position_camera=self._camera_transform(face_position_img,w,h)
         face_position_axis2=np.matmul(self._get_rotation_camera(),face_position_camera)+self.p3
-        face_position_axis1=np.matmul(self._get_rotation_theta2(),face_position_axis2)+self.p2
+        face_position_axis1=np.matmul(np.matmul(np.array([[0.0,0.0,1.0],[0.0,1.0,0.0],[-1.0,0.0,0.0]]),self._get_rotation_theta2()),face_position_axis2)+self.p2
         face_position_axis0=np.matmul(self._get_rotation_theta1(),face_position_axis1)+self.p1
 
         return face_position_axis0[0]
